@@ -44,21 +44,23 @@ public class WorldCycle : MonoBehaviour
     }
 
 
-    public IEnumerator setDesiredIntensity(float timeFrame, float desiredIntensity, float increment, float currentIntensity)
+    public IEnumerator setDesiredIntensity(float timeFrame, float desiredIntensity, float currentIntensity)
     {
         float radiusIncrement = worldSettings.dawnTime + worldSettings.dayTime + worldSettings.duskTime + worldSettings.nightTime;
 
         StartCoroutine(RotateTowardsClosestWayPoint(worldSettings.directionalLighting.transform.eulerAngles, new Vector3(worldSettings.directionalLighting.transform.rotation.x + 360, worldSettings.directionalLighting.transform.rotation.y, worldSettings.directionalLighting.transform.rotation.z), radiusIncrement, worldSettings.directionalLighting.transform.parent.gameObject));
-        //StartCoroutine(RotateTowardsClosestWayPoint(radiusIncrement, worldSettings.directionalLighting.gameObject, 360));
-   
-        //Debug.Log("rotates 1,0,1..");
-        worldSettings.directionalLighting.intensity += increment / timeFrame;
-        yield return new WaitForSeconds(1);
-        if (currentIntensity != desiredIntensity)
-        {
-            StartCoroutine(setDesiredIntensity(worldSettings.duskTime, desiredIntensity, increment, worldSettings.directionalLighting.intensity));
-        }
 
+        float t = 0;
+        //Move while time is still below 1
+        while (t < 1)
+        {
+            t += Time.deltaTime / timeFrame;
+           worldSettings.directionalLighting.intensity = Mathf.Lerp(currentIntensity, desiredIntensity, t);
+
+
+            yield return 0;
+
+        }
     }
 
     public IEnumerator Timer()
@@ -71,50 +73,46 @@ public class WorldCycle : MonoBehaviour
         yield return new WaitForSeconds(worldSettings.timePerSecond);
 
         //if time is between 4  && 6
-        if (worldSettings.currentTime >= worldSettings.dayTime && worldSettings.currentTime < (worldSettings.dayTime + worldSettings.duskTime))
+        if (worldSettings.currentTime >= worldSettings.dayTime * 0.90F && worldSettings.currentTime < (worldSettings.dayTime + worldSettings.duskTime))
         {
             if (worldSettings.setting != WorldSettings.Setting.Dusk)
             {
 
                 worldSettings.setting = WorldSettings.Setting.Dusk;
-                float desiredIntensityRAW = 0.5F;
-                float subtractedIntensity = desiredIntensityRAW - worldSettings.directionalLighting.intensity;
-                StartCoroutine(setDesiredIntensity(worldSettings.duskTime, desiredIntensityRAW, subtractedIntensity, worldSettings.directionalLighting.intensity));
+                float desiredIntensityRAW = 0.2F;
+                StartCoroutine(setDesiredIntensity(worldSettings.dayTime * 0.40F, desiredIntensityRAW, worldSettings.directionalLighting.intensity));
             }
 
 
         }
         //if time is between 6 && 8
-        else if (worldSettings.currentTime >= (worldSettings.dayTime + worldSettings.duskTime) && worldSettings.currentTime < (worldSettings.dayTime + worldSettings.duskTime + worldSettings.nightTime))
+        else if (worldSettings.currentTime >= (worldSettings.dayTime + (worldSettings.duskTime * 0.75F)) && worldSettings.currentTime < (worldSettings.dayTime + worldSettings.duskTime + worldSettings.nightTime))
         {
             if (worldSettings.setting != WorldSettings.Setting.Night)
             {
                 worldSettings.setting = WorldSettings.Setting.Night;
-                float desiredIntensityRAW = 0.25F;
-                float subtractedIntensity = desiredIntensityRAW - worldSettings.directionalLighting.intensity;
-                StartCoroutine(setDesiredIntensity(worldSettings.nightTime, desiredIntensityRAW, subtractedIntensity, worldSettings.directionalLighting.intensity));
+                float desiredIntensityRAW = 0.0F;
+                StartCoroutine(setDesiredIntensity(worldSettings.duskTime * 0.25F, desiredIntensityRAW, worldSettings.directionalLighting.intensity));
             }
 
         }
-        else if (worldSettings.currentTime >= (worldSettings.dayTime + worldSettings.duskTime + worldSettings.nightTime) && worldSettings.currentTime < (worldSettings.dayTime + worldSettings.duskTime + worldSettings.nightTime + worldSettings.dawnTime))
+        else if (worldSettings.currentTime >= (worldSettings.dayTime + worldSettings.duskTime + (worldSettings.nightTime * 0.85F)) && worldSettings.currentTime < (worldSettings.dayTime + worldSettings.duskTime + worldSettings.nightTime + worldSettings.dawnTime))
         {
             if (worldSettings.setting != WorldSettings.Setting.Dawn)
             {
                 worldSettings.setting = WorldSettings.Setting.Dawn;
                 float desiredIntensityRAW = 1F;
-                float subtractedIntensity = desiredIntensityRAW - worldSettings.directionalLighting.intensity;
-                StartCoroutine(setDesiredIntensity(worldSettings.dawnTime, desiredIntensityRAW, subtractedIntensity, worldSettings.directionalLighting.intensity));
+                StartCoroutine(setDesiredIntensity(worldSettings.nightTime * 0.15F, desiredIntensityRAW, worldSettings.directionalLighting.intensity));
             }
 
         }
-        else if (worldSettings.currentTime >= (worldSettings.dayTime + worldSettings.duskTime + worldSettings.nightTime + worldSettings.dawnTime))
+        else if (worldSettings.currentTime >= (worldSettings.dayTime + worldSettings.duskTime + worldSettings.nightTime + (worldSettings.dawnTime * 0.75F)))
         {
             if (worldSettings.setting != WorldSettings.Setting.Day)
             {
                 worldSettings.setting = WorldSettings.Setting.Day;
                 float desiredIntensityRAW = 1.5F;
-                float subtractedIntensity = desiredIntensityRAW - worldSettings.directionalLighting.intensity;
-                StartCoroutine(setDesiredIntensity(worldSettings.dayTime, desiredIntensityRAW, subtractedIntensity, worldSettings.directionalLighting.intensity));
+                StartCoroutine(setDesiredIntensity(worldSettings.dawnTime * 0.25F, desiredIntensityRAW, worldSettings.directionalLighting.intensity));
                 worldSettings.currentTime = 0;
             }
 

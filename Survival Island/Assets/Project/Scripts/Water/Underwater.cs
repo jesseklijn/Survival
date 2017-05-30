@@ -44,7 +44,7 @@ public class Underwater : MonoBehaviour
             RenderSettings.fogDensity = 0.002F;
             RenderSettings.fogColor = new Color(0.61F,0.51F,0.4F,0.5F);
             blur.enabled = false;
-            colorCorrection.enabled = false;
+            //colorCorrection.enabled = false;
         }
     }
 }
