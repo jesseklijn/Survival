@@ -24,7 +24,7 @@ GameObject:
   - 111: {fileID: 111000012309856942}
   - 64: {fileID: 64000011283852048}
   - 54: {fileID: 54000010273569270}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Palm
   m_TagString: Untagged
   m_Icon: {fileID: 0}

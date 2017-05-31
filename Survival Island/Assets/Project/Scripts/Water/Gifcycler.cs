@@ -10,10 +10,14 @@ public class Gifcycler : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        StartCoroutine(RotateTowardsClosestWayPoint(0));
+       
     }
+    void OnEnable()
+    {
+        StartCoroutine(RotateTowardsClosestWayPoint(0));
 
-    IEnumerator RotateTowardsClosestWayPoint(int i)
+    }
+   public IEnumerator RotateTowardsClosestWayPoint(int i)
     {
         if (i == GifImages.Length)
         {
