@@ -1,4 +1,6 @@
-﻿Shader "Custom/Caustics" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/Caustics" {
 	Properties{
 		_Color("Color", Color) = (1,1,1,0)
 		_ShadowTex("Cookie", 2D) = "black" { TexGen ObjectLinear }
@@ -26,7 +28,7 @@
 	fixed _Size;
 	v2f vert(appdata_tan v) {
 		v2f o;
-		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+		o.pos = UnityObjectToClipPos(v.vertex);
 		o.uv = TRANSFORM_TEX(mul(unity_Projector, v.vertex).xy, _ShadowTex) * _Size;
 		return o;
 	}

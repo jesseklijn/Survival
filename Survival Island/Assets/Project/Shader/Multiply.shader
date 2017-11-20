@@ -1,4 +1,6 @@
-﻿// Upgrade NOTE: replaced '_Projector' with 'unity_Projector'
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced '_Projector' with 'unity_Projector'
 
 // Upgrade NOTE: replaced '_Projector' with 'unity_Projector'
 // Upgrade NOTE: replaced '_ProjectorClip' with 'unity_ProjectorClip'
@@ -15,7 +17,7 @@ Shader "Custom/Multiply" {
 		Pass{
 		ZWrite Off
 		Offset -1, -1
-		Fog{ Mode Off }
+		//Fog{ Mode Off }
 		//ColorMask RGB
 		//Blend SrcAlpha OneMinusSrcAlpha
 		Blend DstColor One
@@ -23,7 +25,7 @@ Shader "Custom/Multiply" {
 		CGPROGRAM
 #pragma vertex vert
 #pragma fragment frag
-#pragma fragmentoption ARB_fog_exp2
+//#pragma fragmentoption ARB_fog_exp2
 #pragma fragmentoption ARB_precision_hint_fastest
 #include "UnityCG.cginc"
 
@@ -40,7 +42,7 @@ Shader "Custom/Multiply" {
 
 	v2f vert(appdata_tan v) {
 		v2f o;
-		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+		o.pos = UnityObjectToClipPos(v.vertex);
 		o.uv = TRANSFORM_TEX(mul(unity_Projector, v.vertex).xy, _ShadowTex);
 		return o;
 	}

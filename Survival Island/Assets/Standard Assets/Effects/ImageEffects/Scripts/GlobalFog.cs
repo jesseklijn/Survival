@@ -20,6 +20,36 @@ namespace UnityStandardAssets.ImageEffects
         public float heightDensity = 2.0f;
 		[Tooltip("Push fog away from the camera by this amount")]
         public float startDistance = 0.0f;
+		[Tooltip("Use Fog in skybox")]
+		public bool AffectSkyBox = true;
+        [SerializeField]
+        public AdvancedFog Advanced;
+
+        [System.Serializable]
+        public class AdvancedFog
+        {
+            [Tooltip("Use Scattering Fog")]
+            public bool UseScattering = true;
+            public float Turbidity = 20f;
+            public float WorldScale = 500f;
+            public float Rayleigh = 1f;
+            [Tooltip("Sun Scattering Size")]
+            [Range(0.0001f, 1.0f)]
+            public float ScatteringSize = 0.8f;
+            [Tooltip("Sun Scattering Intensity")]
+            public float ScatteringIntensity = 20f;
+            //[Tooltip("Boost scaterring color")]
+
+            public float Bias = 0.4f;
+            public float contrast = 4.5f;
+            public float luminance = 0.05f;
+            public float lumaAmount = 1f;
+            [HideInInspector]
+            public float Falloff = 0f;
+            [HideInInspector]
+            public float BoostColor = 1f;
+        }
+
 
         public Shader fogShader = null;
         private Material fogMaterial = null;
@@ -36,7 +66,7 @@ namespace UnityStandardAssets.ImageEffects
             return isSupported;
         }
 
-        [ImageEffectOpaque]
+//        [ImageEffectOpaque]
         void OnRenderImage (RenderTexture source, RenderTexture destination)
 		{
             if (CheckResources()==false || (!distanceFog && !heightFog))
@@ -90,6 +120,27 @@ namespace UnityStandardAssets.ImageEffects
             fogMaterial.SetVector ("_HeightParams", new Vector4 (height, FdotC, paramK, heightDensity*0.5f));
             fogMaterial.SetVector ("_DistanceParams", new Vector4 (-Mathf.Max(startDistance,0.0f), 0, 0, 0));
 
+            fogMaterial.SetFloat("_Size", Advanced.ScatteringSize);
+            fogMaterial.SetFloat("turbid", Advanced.Turbidity);
+            fogMaterial.SetFloat("worldscale", Advanced.WorldScale);
+            fogMaterial.SetFloat("reileigh", Advanced.Rayleigh);
+            fogMaterial.SetFloat("_Intensity", Advanced.ScatteringIntensity);
+            fogMaterial.SetFloat("_Falloff", Advanced.Falloff);
+            fogMaterial.SetFloat("_ColBoost", Advanced.BoostColor);
+            fogMaterial.SetFloat("luminance", Advanced.luminance);
+            fogMaterial.SetFloat("lumamount", Advanced.lumaAmount);
+            fogMaterial.SetFloat("bias", Advanced.Bias);
+            fogMaterial.SetFloat("contrast", Advanced.contrast);
+
+//			var format= GetComponent<Camera>().hdr ? RenderTextureFormat.DefaultHDR: RenderTextureFormat.Default;
+//			RenderTexture tmpBuffer = RenderTexture.GetTemporary (32, 32, 0, format);
+//			RenderTexture.active = tmpBuffer;
+//			GL.ClearWithSkybox (false, GetComponent<Camera>());
+//			
+//			fogMaterial.SetTexture ("_Skybox", tmpBuffer);
+//
+//			RenderTexture.ReleaseTemporary (tmpBuffer);
+
             var sceneMode= RenderSettings.fogMode;
             var sceneDensity= RenderSettings.fogDensity;
             var sceneStart= RenderSettings.fogStartDistance;
@@ -107,11 +158,50 @@ namespace UnityStandardAssets.ImageEffects
 
             int pass = 0;
             if (distanceFog && heightFog)
-                pass = 0; // distance + height
-            else if (distanceFog)
-                pass = 1; // distance only
-            else
-                pass = 2; // height only
+                if (AffectSkyBox && Advanced.UseScattering)
+                {
+						pass = 3;
+					} // distance + height + skybox + scattering
+					else if(AffectSkyBox){
+						pass = 6;
+					} // distance + height + skybox
+                else if (Advanced.UseScattering)
+                {
+						pass = 9;
+					} // distance + height + Scattering
+					else {
+						pass = 0;
+					} // distance + height
+			 else if (distanceFog)
+                if (AffectSkyBox && Advanced.UseScattering)
+                {
+						pass = 4;
+					} // distance + skybox + scattering
+					else if(AffectSkyBox){
+						pass = 7;
+					} // distance + skybox
+                else if (Advanced.UseScattering)
+                {
+						pass = 10;
+					} // distance + Scattering
+					else {
+						pass = 1;
+					} // distance only
+			 else
+                if (AffectSkyBox && Advanced.UseScattering)
+                {
+						pass = 5;} // height + skybox + scattering
+					else if(AffectSkyBox){
+						pass = 8;
+					} // height + skybox
+                else if (Advanced.UseScattering)
+                {
+						pass = 11;
+					} // height + Scattering
+					else{
+						pass = 2;
+					} // height only
+
             CustomGraphicsBlit (source, destination, fogMaterial, pass);
         }
 
