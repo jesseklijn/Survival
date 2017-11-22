@@ -211,9 +211,6 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>Library\UnityAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.Analytics">
       <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
@@ -245,8 +242,6 @@
     <Compile Include="Assets\Project\Scripts\Water\SunraysUnderwater.cs" />
     <Compile Include="Assets\Project\Scripts\Water\Underwater.cs" />
     <Compile Include="Assets\Project\Scripts\Weather\WeatherController.cs" />
-    <Compile Include="Assets\Public\Shaders\CausticsProjector.cs" />
-    <Compile Include="Assets\Public\Shaders\StandardCausticsShaderGUI.cs" />
     <Compile Include="Assets\WorldBuilder\Scripts\Heightmapbuilder.cs" />
     <Compile Include="Assets\WorldBuilder\Scripts\Helpers\Threading.cs" />
     <Compile Include="Assets\WorldBuilder\Scripts\TerrainFoliage.cs" />
@@ -268,9 +263,6 @@
     <None Include="Assets\Project\Shader\Multiply.shader" />
     <None Include="Assets\Project\Shader\NoFog.shader" />
     <None Include="Assets\Project\Skybox\Skybox textures\README.TXT" />
-    <None Include="Assets\Public\Shaders\StandardCaustics.shader" />
-    <None Include="Assets\Public\Shaders\UnityStandardCausticsCore.cginc" />
-    <None Include="Assets\Public\Shaders\UnityStandardCausticsInput.cginc" />
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />

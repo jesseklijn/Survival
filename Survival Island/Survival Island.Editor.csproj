@@ -256,9 +256,6 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>Library\UnityAssemblies\UnityEditor.Advertisements.dll</HintPath>
     </Reference>
@@ -273,12 +270,6 @@
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>Library\UnityAssemblies\UnityEditor.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="AssetStoreTools">
-      <HintPath>Assets\AssetStoreTools\Editor\AssetStoreTools.dll</HintPath>
-    </Reference>
-    <Reference Include="AssetStoreToolsExtra">
-      <HintPath>Assets\AssetStoreTools\Editor\AssetStoreToolsExtra.dll</HintPath>
     </Reference>
     <Reference Include="CoherentNoise">
       <HintPath>Assets\WorldBuilder\Scripts\Helpers\CoherentNoise.dll</HintPath>
@@ -327,9 +318,6 @@
     <None Include="Assets\Project\Shader\Multiply.shader" />
     <None Include="Assets\Project\Shader\NoFog.shader" />
     <None Include="Assets\Project\Skybox\Skybox textures\README.TXT" />
-    <None Include="Assets\Public\Shaders\StandardCaustics.shader" />
-    <None Include="Assets\Public\Shaders\UnityStandardCausticsCore.cginc" />
-    <None Include="Assets\Public\Shaders\UnityStandardCausticsInput.cginc" />
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />

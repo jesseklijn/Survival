@@ -34,7 +34,7 @@ public class WeatherController : MonoBehaviour
             fpsRigidbody.useGravity = false;
             caustics.SetActive(true);
             RenderSettings.fogColor = new Color(0, 0, 0.4F, 0.5F);
-            RenderSettings.fogDensity = 0.05F;
+            RenderSettings.fogDensity = 0.08F;
             globalFog.distanceFog = true;
         }
         else
